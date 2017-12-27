@@ -18,14 +18,18 @@ PORTFOLIO_OPTIMIZER_DEPS = main.o
 $(EXE_DIR)/portfolio_optimizer: $(addprefix $(OBJ_DIR)/, $(PORTFOLIO_OPTIMIZER_DEPS))
 	$(CXX) $^ -o $@ $(LDFLAGS)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp init
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp init dep
 	$(CXX) -o $@ -c $< $(CXXFLAGS)
+
+# dependencies
+dep: $(VENDOR_INCLUDE_DIR)/Eigen
+
+$(VENDOR_INCLUDE_DIR)/Eigen:
+	@mkdir -p $(VENDOR_INCLUDE_DIR) && ./scripts/install_eigen.sh $(VENDOR_INCLUDE_DIR)
+
 
 init:
 	@mkdir -p $(EXE_DIR) $(OBJ_DIR)
-
-dep:
-	@mkdir -p $(VENDOR_INCLUDE_DIR) && ./scripts/install_eigen.sh $(VENDOR_INCLUDE_DIR)
 
 .PHONY: clean
 
