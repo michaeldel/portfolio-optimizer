@@ -14,7 +14,7 @@ LIST = $(addprefix $(EXE_DIR)/, $(EXES))
 
 all: $(LIST)
 
-PORTFOLIO_OPTIMIZER_DEPS = main.o
+PORTFOLIO_OPTIMIZER_DEPS = main.o methods.o
 $(EXE_DIR)/portfolio_optimizer: $(addprefix $(OBJ_DIR)/, $(PORTFOLIO_OPTIMIZER_DEPS))
 	$(CXX) $^ -o $@ $(LDFLAGS)
 
@@ -26,7 +26,6 @@ dep: $(VENDOR_INCLUDE_DIR)/Eigen
 
 $(VENDOR_INCLUDE_DIR)/Eigen:
 	@mkdir -p $(VENDOR_INCLUDE_DIR) && ./scripts/install_eigen.sh $(VENDOR_INCLUDE_DIR)
-
 
 init:
 	@mkdir -p $(EXE_DIR) $(OBJ_DIR)
