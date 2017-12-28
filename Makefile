@@ -6,7 +6,7 @@ EXE_DIR = ./bin
 VENDOR_INCLUDE_DIR = ./vendor/include
 
 CXX ?= g++
-CXXFLAGS = -Wall -Wextra -Werror -pedantic -std=c++14 -O -I$(INC_DIR) -I$(VENDOR_INCLUDE_DIR)
+CXXFLAGS = -Wall -Wextra -Werror -pedantic -std=c++14 -O -I$(INC_DIR) -isystem $(VENDOR_INCLUDE_DIR)
 LDFLAGS = -Wall -Wextra -Werror -pedantic
 
 EXES = portfolio_optimizer
