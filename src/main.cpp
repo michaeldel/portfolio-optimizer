@@ -23,7 +23,7 @@ int main() {
             return 2 * hx / x_max * v(m) + v(m - 1);
     };
     const Matrix v = explicit_euler(
-        t_steps,
+        t_steps, 1.0,
         x_steps, 0.0, 2.0,
         phi, fictive_edge_function,
         alpha, mu, r, sigma

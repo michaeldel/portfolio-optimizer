@@ -26,7 +26,7 @@ static Matrix compute_a_hx2_with_fictive_col(const Matrix& v, const Vector& xs, 
 }
 
 Matrix explicit_euler(
-    unsigned int t_steps,
+    unsigned int t_steps, double t_max,
     unsigned int x_steps, double x_min, double x_max,
     const EdgeFunctionType phi, const FictiveEdgeFunctionType fictive_edge_function,
     double alpha, double mu, double r, double sigma
@@ -43,7 +43,7 @@ Matrix explicit_euler(
     for (MatrixDimSizeType i = 0; i < v.cols(); i++)
         v(v.rows() - 1, i) = phi(xs(i));
 
-    const double ht = 1.0 / t_steps;
+    const double ht = t_max / t_steps;
     const double hx = (x_max - x_min) / x_steps;
 
     const double k1 = alpha * mu + (1 - alpha) * r;
