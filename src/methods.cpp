@@ -44,7 +44,7 @@ Matrix explicit_euler(
         v(v.rows() - 1, i) = phi(xs(i));
 
     const double ht = 1.0 / t_steps;
-    const double hx = 1.0 / x_steps;
+    const double hx = (x_max - x_min) / x_steps;
 
     const double k1 = alpha * mu + (1 - alpha) * r;
     const double k2 = alpha * alpha * sigma * sigma / 2;
