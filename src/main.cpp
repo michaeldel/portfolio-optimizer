@@ -17,7 +17,10 @@ int main() {
     const EdgeFunctionType phi = [p](double x) { return x >= 0 && x <= 1 ? x : std::pow(x, p); };
     const FictiveEdgeFunctionType fictive_edge_function = [p](const Vector& v, double x_max, double hx) {
         const MatrixDimSizeType m = v.size() - 1;
-        return 2 * hx * p / x_max * v(m) + v(m - 1);
+        if (x_max >= 1)
+            return 2 * hx * p / x_max * v(m) + v(m - 1);
+        else
+            return 2 * hx / x_max * v(m) + v(m - 1);
     };
     const Matrix v = explicit_euler(
         t_steps,
