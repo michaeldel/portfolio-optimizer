@@ -32,8 +32,6 @@ Matrix explicit_euler(
     double alpha, double mu, double r, double sigma
 ) {
     Matrix v(t_steps + 1, x_steps + 1);
-
-    // xs vector with fictive last x (for Neumann condition)
     const Vector xs = Vector::LinSpaced(v.cols(), x_min, x_max);
 
     // leftmost col edge condition (homogen Dirichlet)
