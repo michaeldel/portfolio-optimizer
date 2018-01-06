@@ -1,6 +1,5 @@
 #include <cmath>
 #include <iostream>
-#include <tuple>
 
 #include "methods.hpp"
 #include "types.hpp"

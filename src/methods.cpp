@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "methods.hpp"
 #include "types.hpp"
 
@@ -25,7 +27,7 @@ static Matrix compute_a_hx2_with_fictive_col(const Matrix& v, const Vector& xs, 
     return a_h2.array().colwise() * xs.array().square().array();
 }
 
-std::tuple<Matrix, Matrix> explicit_euler(
+std::pair<Matrix, Matrix> explicit_euler(
     unsigned int t_steps, double t_max,
     unsigned int x_steps, double x_min, double x_max,
     const EdgeFunctionType phi, const FictiveEdgeFunctionType fictive_edge_function,
@@ -74,5 +76,5 @@ std::tuple<Matrix, Matrix> explicit_euler(
         }
     }
 
-    return std::make_tuple(v, alphas);
+    return std::pair<Matrix, Matrix>(v, alphas);
 }
