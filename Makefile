@@ -9,12 +9,24 @@ CXX ?= g++
 CXXFLAGS = -Wall -Wextra -Werror -pedantic -std=c++17 -O -I$(INC_DIR) -isystem $(VENDOR_INCLUDE_DIR)
 LDFLAGS = -Wall -Wextra -Werror -pedantic
 
+
+
+
+
+
+CXX_FLAGS += -g
+
+
+
+
+
+
 EXES = portfolio_optimizer
 LIST = $(addprefix $(EXE_DIR)/, $(EXES))
 
 all: $(LIST)
 
-PORTFOLIO_OPTIMIZER_DEPS = main.o methods.o
+PORTFOLIO_OPTIMIZER_DEPS = main.o optimizer.o methods/explicit_euler.o
 $(EXE_DIR)/portfolio_optimizer: $(addprefix $(OBJ_DIR)/, $(PORTFOLIO_OPTIMIZER_DEPS))
 	$(CXX) $^ -o $@ $(LDFLAGS)
 
@@ -29,6 +41,7 @@ $(VENDOR_INCLUDE_DIR)/Eigen:
 
 init:
 	@mkdir -p $(EXE_DIR) $(OBJ_DIR)
+	cd $(SRC_DIR) && find . -type d -exec mkdir -p ../obj/{} \;
 
 .PHONY: clean
 

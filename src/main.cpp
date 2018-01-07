@@ -1,7 +1,7 @@
 #include <cmath>
 #include <iostream>
 
-#include "methods.hpp"
+#include "methods/explicit_euler.hpp"
 #include "types.hpp"
 
 int main() {
@@ -13,8 +13,8 @@ int main() {
     const double sigma = 0.2;
 
     const double p = 0.5;
-    const EdgeFunctionType phi = [p](double x) { return std::pow(x, p); };
-    const FictiveEdgeFunctionType fictive_edge_function = [p](const Vector& v, double x_max, double hx) {
+    const BoundaryFunction phi = [p](double x) { return std::pow(x, p); };
+    const FictiveBoundaryFunction fictive_edge_function = [p](const Vector& v, double x_max, double hx) {
         const MatrixDimSizeType m = v.size() - 1;
         if (x_max >= 1)
             return 2 * hx * p / x_max * v(m) + v(m - 1);
@@ -22,11 +22,14 @@ int main() {
             return 2 * hx / x_max * v(m) + v(m - 1);
     };
 
-    const auto [v, alphas] = explicit_euler(
+    const ExplicitEulerPortfolioOptimizer optimizer(
         t_steps, 1.0,
         x_steps, 0.0, 2.0,
-        phi, fictive_edge_function,
-        mu, r, sigma
+        0.0,
+        phi
+    );
+    const auto [v, alphas] = optimizer.optimize(
+        mu, r, sigma, fictive_edge_function
     );
 
     std::cout << "alphas:\n" << alphas << std::endl;

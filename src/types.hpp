@@ -11,7 +11,7 @@ using MatrixDimSizeType = int;
 using Vector = Eigen::VectorXd;
 using RowVector = Eigen::RowVectorXd;
 
-using EdgeFunctionType = std::function<double(double)>;
-using FictiveEdgeFunctionType = std::function<double(const Vector& v, double x_max, double hx)>;
+using BoundaryFunction = std::function<double(double)>;
+using FictiveBoundaryFunction = std::function<double(const Vector& v, double x_max, double hx)>;
 
 #endif
