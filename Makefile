@@ -9,18 +9,6 @@ CXX ?= g++
 CXXFLAGS = -Wall -Wextra -Werror -pedantic -std=c++17 -O -I$(INC_DIR) -isystem $(VENDOR_INCLUDE_DIR)
 LDFLAGS = -Wall -Wextra -Werror -pedantic
 
-
-
-
-
-
-CXX_FLAGS += -g
-
-
-
-
-
-
 EXES = portfolio_optimizer
 LIST = $(addprefix $(EXE_DIR)/, $(EXES))
 
