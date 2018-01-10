@@ -14,7 +14,7 @@ public:
         double x_0_condition = 0.0,
         const BoundaryFunction v_T_condition = [](double x) { return x; }
     );
-    std::pair<Matrix, Matrix> optimize(double yield, double interest_rate, double sigma) const;
+    std::pair<Matrix, Matrix> optimize(double yield, double interest_rate, double volatility) const;
     std::pair<Matrix, Matrix> optimize(
         double yield, double interest_rate, double volatility,
         const FictiveBoundaryFunction neumann_condition
