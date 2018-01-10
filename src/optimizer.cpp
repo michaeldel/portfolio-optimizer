@@ -5,7 +5,6 @@ static Matrix generate_mesh(unsigned int rows, unsigned int cols, double x_0_bou
     Matrix mesh(rows, cols);
     mesh.col(0) = Vector::Constant(mesh.rows(), x_0_boundary);
     auto temp = xs.unaryExpr(v_T_boundary).transpose();
-    auto row = mesh.row(mesh.rows() - 1);
     mesh.row(mesh.rows() - 1) = temp;
     return mesh;
 }
