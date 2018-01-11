@@ -1,6 +1,7 @@
 #include <cmath>
 #include <iostream>
 
+#include "methods/crank_nicolson.hpp"
 #include "methods/explicit_euler.hpp"
 #include "methods/implicit_euler.hpp"
 #include "types.hpp"
@@ -36,16 +37,27 @@ int main() {
     std::cout << "ee alphas:\n" << ee_alphas << std::endl;
     std::cout << "ee v:\n" << ee_v << std::endl;
 
-    const ImplicitEulerPortfolioOptimizer implicit_euleroptimizer(
+    const ImplicitEulerPortfolioOptimizer implicit_euler_optimizer(
         t_steps, 1.0,
         x_steps, 0.0, 2.0,
         0.0, phi
     );
 
-    const auto [ie_v, ie_alphas] = implicit_euleroptimizer.optimize(mu, r, sigma);
+    const auto [ie_v, ie_alphas] = implicit_euler_optimizer.optimize(mu, r, sigma);
 
     std::cout << "ie alphas:\n" << ie_alphas << std::endl;
     std::cout << "ie v:\n" << ie_v << std::endl;
+
+    const CrankNicolsonPortfolioOptimizer crank_nicolson_optimizer(
+        t_steps, 1.0,
+        x_steps, 0.0, 2.0,
+        0.0, phi
+    );
+
+    const auto [cn_v, cn_alphas] = crank_nicolson_optimizer.optimize(mu, r, sigma);
+
+    std::cout << "cn alphas:\n" << cn_alphas << std::endl;
+    std::cout << "cn v:\n" << cn_v << std::endl;
 
     return 0;
 }
