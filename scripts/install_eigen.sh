@@ -10,7 +10,6 @@ if [ ! -d "$1" ]; then
 fi
 
 EIGEN_TARGZ_URL="http://bitbucket.org/eigen/eigen/get/default.tar.gz"
-echo $EIGEN_TARGZ_URL
 
 cd $1
 # mkdir Eigen
