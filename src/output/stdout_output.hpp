@@ -4,7 +4,7 @@
 #include "result_output.hpp"
 #include "types.hpp"
 
-class StdOutOutput {
+class StdOutOutput: public ResultOutput {
 public:
     StdOutOutput(const std::string& annotation);
     void write_output(const Matrix& portfolio_values, const Matrix& alphas) const;
