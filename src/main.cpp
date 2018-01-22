@@ -4,6 +4,7 @@
 #include "methods/crank_nicolson.hpp"
 #include "methods/explicit_euler.hpp"
 #include "methods/implicit_euler.hpp"
+#include "output/stdout_output.hpp"
 #include "types.hpp"
 
 int main() {
@@ -34,8 +35,8 @@ int main() {
         mu, r, sigma, fictive_edge_function
     );
 
-    std::cout << "ee alphas:\n" << ee_alphas << std::endl;
-    std::cout << "ee v:\n" << ee_v << std::endl;
+    const StdOutOutput ee_soo("Explicit Euler");
+    ee_soo.write_output(ee_v, ee_alphas);
 
     const ImplicitEulerPortfolioOptimizer implicit_euler_optimizer(
         t_steps, 1.0,
@@ -45,8 +46,8 @@ int main() {
 
     const auto [ie_v, ie_alphas] = implicit_euler_optimizer.optimize(mu, r, sigma);
 
-    std::cout << "ie alphas:\n" << ie_alphas << std::endl;
-    std::cout << "ie v:\n" << ie_v << std::endl;
+    const StdOutOutput ie_soo("Implicit Euler");
+    ie_soo.write_output(ie_v, ie_alphas);
 
     const CrankNicolsonPortfolioOptimizer crank_nicolson_optimizer(
         t_steps, 1.0,
@@ -56,8 +57,8 @@ int main() {
 
     const auto [cn_v, cn_alphas] = crank_nicolson_optimizer.optimize(mu, r, sigma);
 
-    std::cout << "cn alphas:\n" << cn_alphas << std::endl;
-    std::cout << "cn v:\n" << cn_v << std::endl;
+    const StdOutOutput cn_soo("Crank-Nicolson");
+    cn_soo.write_output(cn_v, cn_alphas);
 
     return 0;
 }
