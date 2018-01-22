@@ -12,5 +12,4 @@ fi
 EIGEN_TARGZ_URL="http://bitbucket.org/eigen/eigen/get/default.tar.gz"
 
 cd $1
-# mkdir Eigen
 curl -SL $EIGEN_TARGZ_URL | tar xvz --wildcards "eigen-eigen-*/Eigen" --strip-components=1
