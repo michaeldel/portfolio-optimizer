@@ -5,6 +5,7 @@
 #include "methods/explicit_euler.hpp"
 #include "methods/implicit_euler.hpp"
 #include "output/stdout_output.hpp"
+#include "output/matlab_m_output.hpp"
 #include "types.hpp"
 
 int main() {
@@ -59,6 +60,9 @@ int main() {
 
     const StdOutOutput cn_soo("Crank-Nicolson");
     cn_soo.write_output(cn_v, cn_alphas);
+
+    const MatlabMOutput cn_mlo("cn.m");
+    cn_mlo.write_output(cn_v, cn_alphas);
 
     return 0;
 }

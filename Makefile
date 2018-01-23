@@ -14,7 +14,7 @@ LIST = $(addprefix $(EXE_DIR)/, $(EXES))
 
 all: $(LIST)
 
-PORTFOLIO_OPTIMIZER_DEPS = main.o optimizer.o methods/crank_nicolson.o methods/explicit_euler.o methods/implicit_euler.o output/stdout_output.o
+PORTFOLIO_OPTIMIZER_DEPS = main.o optimizer.o methods/crank_nicolson.o methods/explicit_euler.o methods/implicit_euler.o output/matlab_m_output.o output/stdout_output.o
 $(EXE_DIR)/portfolio_optimizer: $(addprefix $(OBJ_DIR)/, $(PORTFOLIO_OPTIMIZER_DEPS))
 	$(CXX) $^ -o $@ $(LDFLAGS)
 
