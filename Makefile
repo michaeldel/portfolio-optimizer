@@ -3,7 +3,8 @@ INC_DIR = ./src
 OBJ_DIR = ./obj
 EXE_DIR = ./bin
 
-VENDOR_INCLUDE_DIR = ./vendor/include
+VENDOR_DIR = ./vendor
+VENDOR_INCLUDE_DIR = $(addsuffix /include, $(VENDOR_DIR))
 
 CXX ?= g++
 CXXFLAGS = -Wall -Wextra -Werror -pedantic -std=c++17 -O -I$(INC_DIR) -isystem $(VENDOR_INCLUDE_DIR)
@@ -18,21 +19,30 @@ PORTFOLIO_OPTIMIZER_DEPS = main.o optimizer.o methods/crank_nicolson.o methods/e
 $(EXE_DIR)/portfolio_optimizer: $(addprefix $(OBJ_DIR)/, $(PORTFOLIO_OPTIMIZER_DEPS))
 	$(CXX) $^ -o $@ $(LDFLAGS)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp init dep
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp .initialized $(VENDOR_DIR)/.sentinel
 	$(CXX) -o $@ -c $< $(CXXFLAGS)
 
 # dependencies
-dep: $(VENDOR_INCLUDE_DIR)/Eigen $(VENDOR_INCLUDE_DIR)/tclap
+INCLUDE_DEPS = Eigen tclap
+dep:  $(VENDOR_DIR)/.sentinel
 
-$(VENDOR_INCLUDE_DIR)/Eigen:
-	@mkdir -p $(VENDOR_INCLUDE_DIR) && ./scripts/install_eigen.sh $(VENDOR_INCLUDE_DIR)
+$(VENDOR_DIR)/.sentinel: $(addsuffix /.sentinel, $(addprefix $(VENDOR_INCLUDE_DIR)/, $(INCLUDE_DEPS)))
+	touch $@
 
-$(VENDOR_INCLUDE_DIR)/tclap:
-	@mkdir -p $(VENDOR_INCLUDE_DIR) && ./scripts/install_tclap.sh $(VENDOR_INCLUDE_DIR)
+$(VENDOR_INCLUDE_DIR)/%: $(VENDOR_INCLUDE_DIR)/%/.sentinel
 
-init:
+$(VENDOR_INCLUDE_DIR)/%/.sentinel:
+	$(eval LOWERCASE_NAME := $(shell echo $(shell basename $(@D)) | tr '[:upper:]' '[:lower:]'))
+	@mkdir -p $(VENDOR_INCLUDE_DIR)
+	./scripts/install_$(LOWERCASE_NAME).sh $(VENDOR_INCLUDE_DIR)
+	touch $@
+
+init: .initialized
+
+.initialized:
 	@mkdir -p $(EXE_DIR) $(OBJ_DIR)
 	cd $(SRC_DIR) && find . -type d -exec mkdir -p ../obj/{} \;
+	touch .initialized
 
 .PHONY: clean
 

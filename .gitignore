@@ -3,3 +3,5 @@ obj/
 vendor/
 
 .vscode/
+
+.initialized
