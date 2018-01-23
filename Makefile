@@ -22,10 +22,13 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp init dep
 	$(CXX) -o $@ -c $< $(CXXFLAGS)
 
 # dependencies
-dep: $(VENDOR_INCLUDE_DIR)/Eigen
+dep: $(VENDOR_INCLUDE_DIR)/Eigen $(VENDOR_INCLUDE_DIR)/tclap
 
 $(VENDOR_INCLUDE_DIR)/Eigen:
 	@mkdir -p $(VENDOR_INCLUDE_DIR) && ./scripts/install_eigen.sh $(VENDOR_INCLUDE_DIR)
+
+$(VENDOR_INCLUDE_DIR)/tclap:
+	@mkdir -p $(VENDOR_INCLUDE_DIR) && ./scripts/install_tclap.sh $(VENDOR_INCLUDE_DIR)
 
 init:
 	@mkdir -p $(EXE_DIR) $(OBJ_DIR)
