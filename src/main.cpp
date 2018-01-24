@@ -21,10 +21,22 @@ int main(int argc, char** argv) {
     TCLAP::ValueArg<double> volatility_arg("s", "sigma", "Volatility", false, 0.2, "double");
     cmd.add(volatility_arg);
 
+
+    TCLAP::ValueArg<double> dirichlet_condition_args("d", "dirichlet", "Dirichlet condition", false, 0.0, "double");
+    cmd.add(dirichlet_condition_args);
+
+    std::vector<std::string> allowed_methods;
+    allowed_methods.push_back("expliciteuler");
+    allowed_methods.push_back("impliciteuler");
+    allowed_methods.push_back("cranknicolson");
+    TCLAP::ValuesConstraint<std::string> constraints(allowed_methods);
+    TCLAP::ValueArg<std::string> method_arg("f", "fdmethod", "Finite differences method", false, "expliciteuler", &constraints);
+    cmd.add(method_arg);
+
     TCLAP::ValueArg<double> utility_power_arg("p", "p", "Utility function power", false, 0.5, "double");
     cmd.add(utility_power_arg);
 
-    TCLAP::UnlabeledMultiArg<double> xt_config_arg("xtconfig", "xmin, xsteps, xmax and xsteps", false, "double for limits, unsigned int for steps");
+    TCLAP::UnlabeledMultiArg<double> xt_config_arg("xtconfig", "xmin, xsteps, xmax and tsteps", false, "double for limits, unsigned int for steps");
     cmd.add(xt_config_arg);
 
     try {
