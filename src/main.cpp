@@ -1,5 +1,6 @@
 #include <cmath>
 #include <iostream>
+#include <memory>
 #include <vector>
 
 #include <tclap/CmdLine.h>
