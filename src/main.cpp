@@ -7,9 +7,14 @@
 #include "methods/crank_nicolson.hpp"
 #include "methods/explicit_euler.hpp"
 #include "methods/implicit_euler.hpp"
+#include "optimizer.hpp"
 #include "output/stdout_output.hpp"
 #include "output/matlab_m_output.hpp"
 #include "types.hpp"
+
+enum Method {
+    EXPLICIT_EULER, IMPLICIT_EULER, CRANK_NICOLSON
+};
 
 int main(int argc, char** argv) {
     TCLAP::CmdLine cmd("Portfolio optimizer", ' ', "1.0");
@@ -69,6 +74,20 @@ int main(int argc, char** argv) {
     const double r = interest_rate_arg.getValue();
     const double sigma = volatility_arg.getValue();
 
+    const double dirichlet_condition = dirichlet_condition_args.getValue();
+
+    Method method;
+    if (!method_arg.getValue().compare("expliciteuler"))
+        method = EXPLICIT_EULER;
+    else if (!method_arg.getValue().compare("impliciteuler"))
+        method = IMPLICIT_EULER;
+    else if (!method_arg.getValue().compare("cranknicolson"))
+        method = CRANK_NICOLSON;
+    else {
+        std::cerr << "error: method not recognized" << std::endl;
+        return 1;
+    }
+
     const double p = utility_power_arg.getValue();
     const BoundaryFunction phi = [p](double x) { return std::pow(x, p); };
     const FictiveBoundaryFunction fictive_edge_function = [p](const Vector& v, double x_max, double hx) {
@@ -79,43 +98,28 @@ int main(int argc, char** argv) {
             return 2 * hx / x_max * v(m) + v(m - 1);
     };
 
-    const ExplicitEulerPortfolioOptimizer explicit_euler_optimizer(
-        t_steps, t_max,
-        x_steps, x_min, x_max,
-        0.0, phi
-    );
+    std::unique_ptr<PortfolioOptimizer> optimizer;
+    switch (method) {
+        case EXPLICIT_EULER:
+            optimizer = std::make_unique<ExplicitEulerPortfolioOptimizer>(
+                t_steps, t_max, x_steps, x_min, x_max, dirichlet_condition, phi
+            );
+            break;
+        case IMPLICIT_EULER:
+            optimizer = std::make_unique<ImplicitEulerPortfolioOptimizer>(
+                t_steps, t_max, x_steps, x_min, x_max, dirichlet_condition, phi
+            );
+            break;
+        case CRANK_NICOLSON:
+            optimizer = std::make_unique<CrankNicolsonPortfolioOptimizer>(
+                t_steps, t_max, x_steps, x_min, x_max, dirichlet_condition, phi
+            );
+            break;
+    }
 
-    const auto [ee_v, ee_alphas] = explicit_euler_optimizer.optimize(
-        mu, r, sigma, fictive_edge_function
-    );
-
-    const StdOutOutput ee_soo("Explicit Euler");
-    ee_soo.write_output(ee_v, ee_alphas);
-
-    const ImplicitEulerPortfolioOptimizer implicit_euler_optimizer(
-        t_steps, t_max,
-        x_steps, x_min, x_max,
-        0.0, phi
-    );
-
-    const auto [ie_v, ie_alphas] = implicit_euler_optimizer.optimize(mu, r, sigma);
-
-    const StdOutOutput ie_soo("Implicit Euler");
-    ie_soo.write_output(ie_v, ie_alphas);
-
-    const CrankNicolsonPortfolioOptimizer crank_nicolson_optimizer(
-        t_steps, t_max,
-        x_steps, x_min, x_max,
-        0.0, phi
-    );
-
-    const auto [cn_v, cn_alphas] = crank_nicolson_optimizer.optimize(mu, r, sigma);
-
-    const StdOutOutput cn_soo("Crank-Nicolson");
-    cn_soo.write_output(cn_v, cn_alphas);
-
-    const MatlabMOutput cn_mlo("cn.m");
-    cn_mlo.write_output(cn_v, cn_alphas);
+    const auto [v, alphas] = optimizer->optimize(mu, r, sigma);
+    const StdOutOutput soo("Results");
+    soo.write_output(v, alphas);
 
     return 0;
 }
