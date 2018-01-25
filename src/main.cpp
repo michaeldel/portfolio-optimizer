@@ -103,7 +103,7 @@ int main(int argc, char** argv) {
     switch (method) {
         case EXPLICIT_EULER:
             optimizer = std::make_unique<ExplicitEulerPortfolioOptimizer>(
-                t_steps, t_max, x_steps, x_min, x_max, dirichlet_condition, phi
+                t_steps, t_max, x_steps, x_min, x_max, dirichlet_condition, phi, fictive_edge_function
             );
             break;
         case IMPLICIT_EULER:

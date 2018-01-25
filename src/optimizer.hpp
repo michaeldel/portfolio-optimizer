@@ -13,9 +13,16 @@ public:
         double x_0_condition = 0.0,
         const BoundaryFunction v_T_condition = [](double x) { return x; }
     );
-    virtual std::pair<Matrix, Matrix> optimize(double yield, double interest_rate, double volatility) const = 0;
+    std::pair<Matrix, Matrix> optimize(double yield, double interest_rate, double volatility);
 
 protected:
+    virtual void initialize_optimization() = 0;
+    virtual double iterate(
+        const Vector& current_row, MatrixDimSizeType col,
+        double yield, double interest_rate, double volatility, double allocation
+    ) const = 0;
+    virtual Vector compute_current_row(const Matrix& portfolio_values, MatrixDimSizeType row_index) const;
+
     const double m_ht;
     const double m_hx;
 

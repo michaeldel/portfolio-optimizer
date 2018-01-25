@@ -29,37 +29,19 @@ static Matrix compute_a_hx2(const Matrix& v, const Vector& xs, double ht, double
     return a_h2.array().colwise() * xs.array().square().array();
 }
 
-std::pair<Matrix, Matrix> ImplicitEulerPortfolioOptimizer::optimize(double yield, double interest_rate, double volatility) const {
-    Matrix v = m_mesh;
+void ImplicitEulerPortfolioOptimizer::initialize_optimization() {
+    m_a_hx = compute_a_hx(m_mesh, m_xs, m_ht, m_hx);
+    m_a_hx2 = compute_a_hx2(m_mesh, m_xs, m_ht, m_hx);
+    m_im = Matrix::Identity(m_mesh.cols(), m_mesh.cols());
+}
 
-    const Matrix a_hx = compute_a_hx(m_mesh, m_xs, m_ht, m_hx);
-    const Matrix a_hx2 = compute_a_hx2(m_mesh, m_xs, m_ht, m_hx);
-    const Matrix im = Matrix::Identity(v.cols(), v.cols());
+double ImplicitEulerPortfolioOptimizer::iterate(
+    const Vector& current_row, MatrixDimSizeType col,
+    double yield, double interest_rate, double volatility, double allocation
+) const {
+    const double rho1 = allocation * yield + (1 - allocation) * interest_rate;
+    const double rho2 = allocation * allocation * volatility * volatility / 2;
 
-    Matrix alphas(v.rows() - 1, v.cols() - 1);
-
-    for (MatrixDimSizeType i = v.rows() - 1; i > 0; i--) {
-        const Vector current_row = v.row(i).transpose();
-
-        // first column is Dirichlet condition and hence not taken
-        for (MatrixDimSizeType j = 1; j < v.cols(); j++) {
-            double alpha = -1;
-            double max_v_ij = -1E99;
-            for (double a = 0.2; a <= 0.9; a += 0.01) {
-                const double rho1 = a * yield + (1 - a) * interest_rate;
-                const double rho2 = a * a * volatility * volatility / 2;
-
-                const Vector v_i = (rho1 * a_hx + rho2 * a_hx2 + im).colPivHouseholderQr().solve(current_row);
-                const double v_ij = v_i(j);
-                if (v_ij > max_v_ij) {
-                    max_v_ij = v_ij;
-                    alpha = a;
-                }
-            }
-            v(i - 1, j) = max_v_ij;
-            alphas(i - 1, j - 1) = alpha;
-        }
-    }
-
-    return std::pair<Matrix, Matrix>(v, alphas);
+    const Vector v_i = (rho1 * m_a_hx + rho2 * m_a_hx2 + m_im).colPivHouseholderQr().solve(current_row);
+    return v_i(col);
 }
