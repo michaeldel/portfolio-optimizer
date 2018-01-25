@@ -12,7 +12,7 @@ portfolio_optimizer --help
 USAGE:
 
    portfolio_optimizer  [-p <double>] [-f <expliciteuler|impliciteuler
-                            |cranknicolson>] [-d <double>] [-s <double>] [-r <double>] [-m <double>] [--] [--version] [-h] <double for limits, unsigned int for steps> ...
+                        |cranknicolson>] [-d <double>] [-s <double>] [-r <double>] [-m <double>] [--] [--version] [-h] <double for limits, unsigned int for steps> ...
 
 
 Where:
