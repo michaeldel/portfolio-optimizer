@@ -119,7 +119,7 @@ int main(int argc, char** argv) {
     }
 
     const auto [v, alphas] = optimizer->optimize(mu, r, sigma);
-    const StdOutOutput soo("Results");
+    const StdOutOutput soo("Result");
     soo.write_output(v, alphas);
 
     return 0;
