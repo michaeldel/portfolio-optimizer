@@ -1,5 +1,6 @@
 bin/
 obj/
+output/
 vendor/
 
 .vscode/
