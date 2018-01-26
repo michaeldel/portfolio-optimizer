@@ -29,6 +29,9 @@ Where:
    -d <double>,  --dirichlet <double>
      Dirichlet condition
 
+   -a <double>,  --allocation <double>
+     Specific allocation, negative for none
+
    -s <double>,  --sigma <double>
      Volatility
 

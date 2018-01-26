@@ -19,7 +19,10 @@ PortfolioOptimizer::PortfolioOptimizer(
    m_ts{ Vector::LinSpaced(t_steps + 1, 0.0, t_max) },
    m_mesh{ generate_mesh(t_steps + 1, x_steps + 1, x_0_condition, v_T_condition, m_xs) } {}
 
-std::pair<Matrix, Matrix> PortfolioOptimizer::optimize(double yield, double interest_rate, double volatility) {
+std::pair<Matrix, Matrix> PortfolioOptimizer::optimize(
+    double yield, double interest_rate, double volatility,
+    double lower_allocation, double upper_allocation, double allocation_step
+) {
     initialize_optimization();
     Matrix v = m_mesh;
     Matrix alphas(v.rows() - 1, v.cols() - 1);
@@ -32,7 +35,7 @@ std::pair<Matrix, Matrix> PortfolioOptimizer::optimize(double yield, double inte
             double alpha = -1;
             double max_v_ij = -1E99;
 
-            for (double a = 0.2; a <= 0.9; a += 0.01) {
+            for (double a = lower_allocation; a <= upper_allocation; a += allocation_step) {
                 const double v_ij = iterate(
                     current_row, j,
                     yield, interest_rate, volatility, a

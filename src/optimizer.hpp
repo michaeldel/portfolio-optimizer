@@ -13,7 +13,12 @@ public:
         double x_0_condition = 0.0,
         const BoundaryFunction v_T_condition = [](double x) { return x; }
     );
-    std::pair<Matrix, Matrix> optimize(double yield, double interest_rate, double volatility);
+    std::pair<Matrix, Matrix> optimize(
+        double yield, double interest_rate, double volatility,
+        double lower_allocation = 0.2,
+        double upper_allocation = 0.9,
+        double allocation_step = 0.1
+    );
 
     const Vector xs() const { return m_xs; };
     const Vector ts() const { return m_ts; };

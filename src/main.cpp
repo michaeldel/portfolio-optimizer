@@ -27,6 +27,8 @@ int main(int argc, char** argv) {
     TCLAP::ValueArg<double> volatility_arg("s", "sigma", "Volatility", false, 0.2, "double");
     cmd.add(volatility_arg);
 
+    TCLAP::ValueArg<double> allocation_arg("a", "allocation", "Specific allocation, negative for none", false, -1.0, "double");
+    cmd.add(allocation_arg);
 
     TCLAP::ValueArg<double> dirichlet_condition_args("d", "dirichlet", "Dirichlet condition", false, 0.0, "double");
     cmd.add(dirichlet_condition_args);
@@ -121,7 +123,9 @@ int main(int argc, char** argv) {
             break;
     }
 
-    const auto [v, alphas] = optimizer->optimize(mu, r, sigma);
+    const double specific_allocation = allocation_arg.getValue();
+    const auto [v, alphas] =  specific_allocation > 0 ?
+        optimizer->optimize(mu, r, sigma, specific_allocation, specific_allocation, 1) : optimizer->optimize(mu, r, sigma);
     const auto xs = optimizer->xs();
     const auto ts = optimizer->ts();
 
