@@ -82,3 +82,9 @@ Output method can also be writing to a Matlab `.m` file thanks to the `-o` optio
 ```
 portfolio_optimizer -o results.m
 ```
+If Matlab is also available on your computer (accessible through `matlab` command), you can run a simple example with surface plot of result:
+```
+./examples/default_example.sh
+```
+This should produce the following plot:
+![Default example optimization result](/images/default_example.png)
