@@ -15,6 +15,9 @@ public:
     );
     std::pair<Matrix, Matrix> optimize(double yield, double interest_rate, double volatility);
 
+    const Vector xs() const { return m_xs; };
+    const Vector ts() const { return m_ts; };
+
 protected:
     virtual void initialize_optimization() = 0;
     virtual double iterate(
@@ -28,6 +31,7 @@ protected:
 
     // order is important for initialization
     const Vector m_xs;
+    const Vector m_ts;
     const Matrix m_mesh;
 };
 

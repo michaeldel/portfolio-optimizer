@@ -122,13 +122,15 @@ int main(int argc, char** argv) {
     }
 
     const auto [v, alphas] = optimizer->optimize(mu, r, sigma);
+    const auto xs = optimizer->xs();
+    const auto ts = optimizer->ts();
 
     if (!result_output_file.getValue().compare("")) {
         const StdOutOutput soo("Result");
-        soo.write_output(v, alphas);
+        soo.write_result(xs, ts, v, alphas);
     } else {
         const MatlabMOutput mmo(result_output_file.getValue());
-        mmo.write_output(v, alphas);
+        mmo.write_result(xs, ts, v, alphas);
     }
 
     return 0;

@@ -7,7 +7,10 @@
 class MatlabMOutput: public ResultOutput {
 public:
     MatlabMOutput(const std::string& path);
-    void write_output(const Matrix& portfolio_values, const Matrix& alphas) const;
+    void write_result(
+        const Vector& xs, const Vector& ts,
+        const Matrix& portfolio_values, const Matrix& alphas
+    ) const;
 
 private:
     const std::string m_path;

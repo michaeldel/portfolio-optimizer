@@ -16,11 +16,11 @@ PortfolioOptimizer::PortfolioOptimizer(
     const BoundaryFunction v_T_condition
 ): m_ht{ t_max / t_steps }, m_hx{ (x_max - x_min) / x_steps },
    m_xs{ Vector::LinSpaced(x_steps + 1, x_min, x_max) },
+   m_ts{ Vector::LinSpaced(t_steps + 1, 0.0, t_max) },
    m_mesh{ generate_mesh(t_steps + 1, x_steps + 1, x_0_condition, v_T_condition, m_xs) } {}
 
 std::pair<Matrix, Matrix> PortfolioOptimizer::optimize(double yield, double interest_rate, double volatility) {
     initialize_optimization();
-
     Matrix v = m_mesh;
     Matrix alphas(v.rows() - 1, v.cols() - 1);
 
@@ -46,7 +46,6 @@ std::pair<Matrix, Matrix> PortfolioOptimizer::optimize(double yield, double inte
             alphas(i - 1, j - 1) = alpha;
         }
     }
-
     return std::pair<Matrix, Matrix>(v, alphas);
 }
 

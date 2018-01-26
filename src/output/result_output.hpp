@@ -5,7 +5,10 @@
 
 class ResultOutput {
 public:
-    virtual void write_output(const Matrix& portfolio_values, const Matrix& alphas) const = 0;
+    virtual void write_result(
+        const Vector& xs, const Vector& ts,
+        const Matrix& portfolio_values, const Matrix& alphas
+    ) const = 0;
 };
 
 #endif

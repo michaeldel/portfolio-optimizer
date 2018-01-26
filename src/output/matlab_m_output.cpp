@@ -19,9 +19,14 @@ static void write_matrix_to_m_file(std::ofstream& file, const std::string& name,
 
 MatlabMOutput::MatlabMOutput(const std::string& path) : m_path(path) {}
 
-void MatlabMOutput::write_output(const Matrix& portfolio_values, const Matrix& alphas) const {
+void MatlabMOutput::write_result(
+    const Vector& xs, const Vector& ts,
+    const Matrix& portfolio_values, const Matrix& alphas
+) const {
     std::ofstream file;
     file.open(m_path);
+    write_matrix_to_m_file(file, "xs", xs);
+    write_matrix_to_m_file(file, "ts", ts);
     write_matrix_to_m_file(file, "V", portfolio_values);
     write_matrix_to_m_file(file, "alphas", alphas);
     file.close();
