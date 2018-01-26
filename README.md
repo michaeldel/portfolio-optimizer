@@ -1,4 +1,4 @@
-# Portfolio Optimizer
+# Portfolio Optimizer [![Build Status](https://travis-ci.org/michaeldel/portfolio-optimizer.svg?branch=master)](https://travis-ci.org/michaeldel/portfolio-optimizer)
 ## Usage
 Compile the program using:
 ```
