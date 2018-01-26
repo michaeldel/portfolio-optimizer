@@ -47,4 +47,4 @@ init: .initialized
 .PHONY: clean
 
 clean:
-	rm -rf $(EXE_DIR) $(OBJ_DIR)
+	rm -rf $(EXE_DIR) $(OBJ_DIR) .initialized
