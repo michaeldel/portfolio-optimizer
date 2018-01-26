@@ -1,6 +1,6 @@
 # Portfolio Optimizer
 ## Usage
-Compile the program using
+Compile the program using:
 ```
 make
 ```
@@ -52,7 +52,7 @@ Where:
 ```
 
 ## Example
-Here is the output when using default parameters values (meaning the output would be the same when simply calling `portfolio_optimizer` without any other argument)
+Here is the output when using default parameters values (meaning the output would be the same when simply calling `portfolio_optimizer` without any other argument):
 ```
 portfolio_optimizer 0 10 2 9 -p 0.5 -f expliciteuler -d 0 -s 0.2 -r 0.05 -m 0.06
 Result alphas:
@@ -77,4 +77,8 @@ Result portfolio values:
        0 0.449311  0.63575 0.778776 0.899344  1.00556  1.10158  1.18989  1.27207  1.34926  1.42223
        0 0.448261   0.6341 0.776683 0.896882  1.00278  1.09851  1.18655  1.26849  1.34545  1.41822
        0 0.447214 0.632456 0.774597 0.894427        1  1.09545  1.18322  1.26491  1.34164  1.41421
+```
+Output method can also be writing to a Matlab `.m` file thanks to the `-o` option:
+```
+portfolio_optimizer -o results.m
 ```
