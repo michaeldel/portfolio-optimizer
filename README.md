@@ -11,14 +11,16 @@ portfolio_optimizer --help
 
 USAGE:
 
-   portfolio_optimizer  [-p <double>] [-f <expliciteuler|impliciteuler
-                        |cranknicolson>] [-d <double>] [-s <double>] [-r <double>] [-m <double>] [--] [--version] [-h] <double for limits, unsigned int for steps> ...
+   portfolio_optimizer  [-p <double>] [-o <string>] [-f <expliciteuler|impliciteuler|cranknicolson>] [-d <double>] [-s <double>] [-r <double>][-m <double>] [--][--version] [-h] <double for limits, unsigned int for steps> ...
 
 
 Where:
 
    -p <double>,  --p <double>
      Utility function power
+
+   -o <string>,  --output <string>
+     Output Matlab .m file
 
    -f <expliciteuler|impliciteuler|cranknicolson>,  --fdmethod
       <expliciteuler|impliciteuler|cranknicolson>

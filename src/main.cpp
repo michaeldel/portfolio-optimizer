@@ -39,6 +39,9 @@ int main(int argc, char** argv) {
     TCLAP::ValueArg<std::string> method_arg("f", "fdmethod", "Finite differences method", false, "expliciteuler", &constraints);
     cmd.add(method_arg);
 
+    TCLAP::ValueArg<std::string> result_output_file("o", "output", "Output Matlab .m file", false, "", "string");
+    cmd.add(result_output_file);
+
     TCLAP::ValueArg<double> utility_power_arg("p", "p", "Utility function power", false, 0.5, "double");
     cmd.add(utility_power_arg);
 
@@ -119,8 +122,14 @@ int main(int argc, char** argv) {
     }
 
     const auto [v, alphas] = optimizer->optimize(mu, r, sigma);
-    const StdOutOutput soo("Result");
-    soo.write_output(v, alphas);
+
+    if (!result_output_file.getValue().compare("")) {
+        const StdOutOutput soo("Result");
+        soo.write_output(v, alphas);
+    } else {
+        const MatlabMOutput mmo(result_output_file.getValue());
+        mmo.write_output(v, alphas);
+    }
 
     return 0;
 }
